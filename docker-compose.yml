@@ -1,0 +1,15 @@
+services:
+  nginx:
+      build: infra/docker/nginx
+      restart: always
+      volumes:
+        - ./www:/usr/share/nginx/html
+      hostname: hidden
+      container_name: nginx
+      entrypoint: /usr/bin/entrypoint.sh
+      ports:
+        - 8080:80
+      environment:
+        - WEBSITE_HOSTNAMES=localhost.shell localhost.check
+
+  
