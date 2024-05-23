@@ -1,15 +1,27 @@
 services:
+  phpfpm:
+    image: 'bitnami/php-fpm:latest'
+    networks:
+      - app-tier
+    volumes:
+      - ./www:/app
+    container_name: php
   nginx:
-      build: infra/docker/nginx
-      restart: always
-      volumes:
-        - ./www:/usr/share/nginx/html
-      hostname: hidden
-      container_name: nginx
-      entrypoint: /usr/bin/entrypoint.sh
-      ports:
-        - 8080:80
-      environment:
-        - WEBSITE_HOSTNAMES=localhost.shell localhost.check
+    build: infra/docker/nginx
+    depends_on:
+      - phpfpm
+    networks:
+      - app-tier
+    ports:
+      - '8080:8080'
+      - '443:443'
+    volumes:
+      - ./www:/app
+    environment:
+      - WEBSITE_HOSTNAMES=localhost.shell localhost.check
+    container_name: nginx
+    entrypoint: /usr/bin/entrypoint.sh
 
-  
+networks:
+  app-tier:
+    driver: bridge
