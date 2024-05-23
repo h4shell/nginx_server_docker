@@ -27,4 +27,14 @@ for item in "${hosts[@]}"; do
 }" > /opt/bitnami/nginx/conf/server_blocks/$item.conf
 done
 
+# echo "
+# server {
+#     listen 0.0.0.0:8080;
+#     server_name example.com;  # Sostituire con il tuo dominio
+#     location / {
+#         proxy_pass http://192.168.1.1:80;
+#     }
+# }
+# " > /opt/bitnami/nginx/conf/server_blocks/serdefault.conf
+
 nginx -g 'daemon off;'
